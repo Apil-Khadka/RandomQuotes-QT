@@ -1,50 +1,61 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(RandomQuotes VERSION 0.1 LANGUAGES CXX)
+project(QuoteMotive VERSION 0.1 LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Core Quick Sql Widgets Gui)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
-qt_add_executable(appRandomQuotes
+qt_add_executable(appQuoteMotive
     main.cpp
+    quotegenerate.h
+    quotegenerate.cpp
 )
 
-qt_add_qml_module(appRandomQuotes
-    URI RandomQuotes
+qt_add_resources(appQuoteMotive "resources"
+    PREFIX "/"
+    FILES database/quotes.db
+)
+
+qt_add_qml_module(appQuoteMotive
+    URI QuoteMotive
     VERSION 1.0
     QML_FILES
-        Main.qml
-        SOURCES quotesloader.h
-        RESOURCES resources.qrc
+        Qml/Main.qml
+        QML_FILES Qml/Util.js
+
 )
 
-qt_add_resources(appRandomQuotes "resources"
-    PREFIX "/json"
-    FILES
-        quotes.json
-)
+# Android-specific settings
+if(ANDROID)
+    set_target_properties(appQuoteMotive PROPERTIES
+        QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android"
+        QT_ANDROID_PACKAGE_NAME "io.apil.quotiqr"
+        QT_ANDROID_TARGET_SDK_VERSION
+        QT_ANDROID_VERSION_CODE 10
+        QT_ANDROID_VERSION_NAME "1.0"
+    )
+endif()
 
-
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
-set_target_properties(appRandomQuotes PROPERTIES
-#    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appRandomQuotes
+# iOS/macOS Bundle Identifier Configuration
+set_target_properties(appQuoteMotive PROPERTIES
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(appRandomQuotes
-    PRIVATE Qt6::Quick
+# Link necessary Qt components
+target_link_libraries(appQuoteMotive
+    PRIVATE Qt6::Quick Qt6::Widgets Qt6::Sql Qt6::Gui
 )
 
+# Install paths for different platforms
 include(GNUInstallDirs)
-install(TARGETS appRandomQuotes
+install(TARGETS appQuoteMotive
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

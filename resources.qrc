@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/json">
-        <file>quotes.json</file>
-    </qresource>
-</RCC>

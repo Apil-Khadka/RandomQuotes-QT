@@ -1,22 +1,27 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "quotesloader.h"
-#include <QResource>
-#include <QDebug>
-#include <QDir>
 
-int main(int argc, char *argv[]) {
+#include "quotegenerate.h"
+
+int main(int argc, char *argv[])
+{
     QGuiApplication app(argc, argv);
+
+    QuoteGenerate quoteGen;
+
     QQmlApplicationEngine engine;
 
-    // Debug: List all registered resources
-    QDir resourceDir(":/json");
-    qDebug() << "Registered resources:" << resourceDir.entryList();
+    engine.rootContext()->setContextProperty("quoteGen", &quoteGen);
 
-    QuotesLoader quotesLoader;
-    engine.rootContext()->setContextProperty("quotesLoader", &quotesLoader);
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreationFailed,
+        &app,
+        []() { QCoreApplication::exit(-1); },
+        Qt::QueuedConnection);
 
-    engine.loadFromModule("RandomQuotes", "Main");
+    engine.loadFromModule("QuoteMotive", "Main");
+
     return app.exec();
 }

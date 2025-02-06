@@ -21,7 +21,7 @@ QuoteGenerate::QuoteGenerate(QObject *parent)
 
 QString QuoteGenerate::currentQuote() const {
     if (m_quotes.isEmpty())
-        return "No quotes available.";
+        return "Click Generate To get a Quote";
     return m_quotes[m_currentIndex].first;
 }
 

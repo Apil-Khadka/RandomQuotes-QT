@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(QuoteMotive VERSION 0.1 LANGUAGES CXX)
+project(RandomQuotes-QT VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -26,6 +26,8 @@ qt_add_qml_module(appQuoteMotive
     QML_FILES
         Qml/Main.qml
         QML_FILES Qml/Util.js
+        QML_FILES Qml/QuoteView.qml
+        QML_FILES Qml/InitScreen.qml
 
 )
 

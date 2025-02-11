@@ -136,7 +136,7 @@ void QuoteGenerate::initializeDatabase() {
     }
 
     // Open database connection
-    m_db = QSqlDatabase::addDatabase("QSQLITE");
+    m_db = QSqlDatabase::addDatabase("QSQLITE","quotes_connection");
     m_db.setDatabaseName(destPath);
     if (!m_db.open()) {
         qDebug() << "Database open error:" << m_db.lastError().text();

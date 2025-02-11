@@ -37,9 +37,7 @@ private:
     QList<QPair<QString, QString>> m_quotes;
     int m_currentIndex;
 
-    // Persistent database connection.
-    QSqlDatabase m_db;
-
+    QSqlDatabase m_db ;
     // Status message shown when trying to navigate past boundaries.
     QString m_statusMessage;
 };
